@@ -232,16 +232,9 @@ section > * { position: relative; z-index: 1; }
 .franziska-qualifications li { font-size: clamp(1rem, 1.25vw, 1.2rem); color: var(--mid); padding-left: 1.5rem; position: relative; line-height: 1.7; }
 .franziska-qualifications li::before { content: '·'; position: absolute; left: 0; color: var(--rose); font-size: 1.2em; }
 .franziska-photo {
-  display: block; width: 100%; height: auto; max-height: 600px;
-  object-fit: cover; object-position: center top;
-  border-radius: 2px; border-top: 3px solid var(--rose);
-  box-shadow: 0 4px 24px rgba(21,18,16,0.12); margin-bottom: 2.5rem;
-}
-.franziska-home-img {
-  display: block; width: 100%; aspect-ratio: 4/3;
-  object-fit: cover; object-position: center;
-  border-top: 2px solid rgba(160,69,96,0.30);
-  margin-top: 0;
+  display: block; width: 100%; height: auto;
+  border-top: 3px solid var(--rose);
+  box-shadow: 0 4px 24px rgba(21,18,16,0.12);
 }
 @media (max-width: 900px) { .franziska-layout { grid-template-columns: 1fr; } .franziska-aside { display: none; } }
 
@@ -252,7 +245,7 @@ section > * { position: relative; z-index: 1; }
 #angebote .section-title { color: var(--white); }
 #angebote .section-body { color: rgba(255,255,255,0.82); }
 .angebote-header { margin-bottom: clamp(2.5rem, 4vw, 4rem); }
-.angebote-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.75rem, 1.5vw, 1.5rem); }
+.angebote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.75rem, 1.5vw, 1.5rem); }
 .angebot-card {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.07);
@@ -266,36 +259,13 @@ section > * { position: relative; z-index: 1; }
 .angebot-body { padding: clamp(1.25rem, 1.8vw, 1.75rem) clamp(1rem, 1.5vw, 1.5rem) clamp(1.5rem, 2vw, 2rem); }
 .angebot-name { font-family: var(--font-serif); font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 400; color: var(--white); margin-bottom: 0.75rem; line-height: 1.3; }
 .angebot-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: rgba(255,255,255,0.72); line-height: 1.75; }
-@media (max-width: 1024px) { .angebote-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .angebote-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .angebote-grid { grid-template-columns: 1fr; } }
 
-/* ── Bewusstseinstraining — 8 Schlüssel ── */
-#bewusstsein { overflow: hidden; }
-#bewusstsein::before { content: ''; position: absolute; inset: 0; background: rgba(245,238,228,0.88); pointer-events: none; }
-#bewusstsein .section-overline { color: var(--rose-dark); }
-#bewusstsein .section-title { color: var(--deep); }
-.bewusstsein-layout { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 7rem); align-items: start; }
-.bewusstsein-text .section-body { max-width: 100%; }
-.bewusstsein-body-2 { font-size: clamp(1.05rem, 1.4vw, 1.3rem); color: var(--mid); line-height: 1.95; margin-top: 1.75rem; margin-bottom: 2.5rem; }
-.schluessel-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
-.schluessel-item { padding: 1.25rem 1.5rem; background: var(--white); border-left: 3px solid var(--rose); box-shadow: 0 2px 12px rgba(21,18,16,0.06); }
-.schluessel-num { font-family: var(--font-serif); font-size: 0.78rem; color: var(--rose-dark); letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.25rem; }
-.schluessel-name { font-family: var(--font-serif); font-size: clamp(1rem, 1.3vw, 1.15rem); color: var(--deep); font-weight: 400; margin-bottom: 0.3rem; }
-.schluessel-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: var(--muted); line-height: 1.65; }
-.bewusstsein-imgs { display: flex; flex-direction: column; gap: 1.5rem; }
-.bewusstsein-img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.bewusstsein-img-wrap {
-  aspect-ratio: 1/1; overflow: hidden; border-radius: 50%;
-  border: 3px solid rgba(201,107,130,0.25);
-  background: rgba(245,238,228,0.10);
-}
-.bewusstsein-img {
-  display: block; width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-}
-.bewusstsein-img-main-wrap { aspect-ratio: 4/3; overflow: hidden; background: rgba(245,238,228,0.06); border-top: 2px solid var(--rose); }
-.bewusstsein-img-main { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-@media (max-width: 900px) { .bewusstsein-layout { grid-template-columns: 1fr; } .bewusstsein-imgs { display: none; } }
+.angebote-weitere { margin-top: clamp(2.5rem, 4vw, 4rem); padding-top: clamp(2rem, 3vw, 3rem); border-top: 1px solid rgba(255,255,255,0.10); }
+.angebote-weitere-label { font-size: clamp(0.85rem, 0.95vw, 0.95rem); letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.50); margin-bottom: 1.5rem; }
+.angebote-weitere-grid { display: flex; flex-wrap: wrap; gap: 0.75rem 2.5rem; }
+.angebote-weitere-grid span { font-size: clamp(1rem, 1.2vw, 1.1rem); color: rgba(255,255,255,0.78); padding-left: 1.25rem; position: relative; line-height: 1.8; }
+.angebote-weitere-grid span::before { content: '→'; position: absolute; left: 0; color: var(--rose); font-size: 0.85em; }
 
 /* ── Inspiration ── */
 #inspiration { overflow: hidden; }
@@ -406,7 +376,6 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
   <ul class="nav-links">
     <li><a href="#franziska">Franziska Brehm</a></li>
     <li><a href="#angebote">Angebote</a></li>
-    <li><a href="#bewusstsein">Training</a></li>
     <li><a href="#inspiration">Inspiration</a></li>
     <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
   </ul>
@@ -419,7 +388,6 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
 <div class="nav-mobile-menu" id="mobileMenu" role="dialog" aria-label="Hauptnavigation">
   <a href="#franziska" class="mobile-nav-link">Franziska Brehm</a>
   <a href="#angebote" class="mobile-nav-link">Angebote</a>
-  <a href="#bewusstsein" class="mobile-nav-link">Training</a>
   <a href="#inspiration" class="mobile-nav-link">Inspiration</a>
   <a href="#kontakt" class="mobile-nav-link mobile-cta">Kontakt</a>
 </div>
@@ -445,7 +413,7 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
       <span class="tag-sep" aria-hidden="true">·</span>
       <a href="#angebote" class="tag">Kurse</a>
       <span class="tag-sep" aria-hidden="true">·</span>
-      <a href="#bewusstsein" class="tag">Training</a>
+      <a href="#angebote" class="tag">Training</a>
       <span class="tag-sep" aria-hidden="true">·</span>
       <a href="#angebote" class="tag">Workshops</a>
       <span class="tag-sep" aria-hidden="true">·</span>
@@ -453,9 +421,9 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
   </div>
   <div class="hero-portrait">
-    <img src="img/franziska-brehm-portrait.jpg"
-         alt="Franziska Brehm, Diplom-Pädagogin und Coach"
-         loading="eager" width="300" height="400"
+    <img src="img/home.jpg"
+         alt="I-pro-P — Institut für prozessorientierte Persönlichkeitsentwicklung"
+         loading="eager" width="291" height="313"
          class="hero-portrait-img" onerror="this.style.display='none'">
   </div>
 </section>
@@ -484,12 +452,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     <div class="franziska-aside">
       <img src="img/franziska-brehm-portrait.jpg"
            alt="Franziska Brehm"
-           loading="lazy" width="340" height="453"
+           loading="lazy" width="273" height="181"
            class="franziska-photo" onerror="this.style.display='none'">
-      <img src="img/home.jpg"
-           alt="I-pro-P Institut"
-           loading="lazy" width="340" height="255"
-           class="franziska-home-img" onerror="this.style.display='none'">
     </div>
   </div>
 </section>
@@ -504,154 +468,43 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
   <div class="angebote-grid">
 
     <div class="angebot-card">
-      <div class="angebot-img-wrap"><img src="img/bewusstseinstraining.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
-      <div class="angebot-body">
-        <h3 class="angebot-name">Coaching</h3>
-        <p class="angebot-desc">Individuelles Kreativ-Coaching zu Lebensgestaltung, Karriere, Kommunikation, Führung, Zeit- und Stressmanagement. Inkl. Jongliercoaching — Hindernisse mit Leichtigkeit überwinden.</p>
-      </div>
-    </div>
-
-    <div class="angebot-card">
       <div class="angebot-img-wrap"><img src="img/koerperglueck.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
+           alt="" loading="lazy" width="203" height="226" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
-        <h3 class="angebot-name">Kurse</h3>
-        <p class="angebot-desc">GleichKlanG (Bewegte Entspannung, 5 Wochen) · AchtsamSein online · Progressive Muskelentspannung · Spiel und Freude unterm Regenbogen für Kinder ab 7.</p>
+        <h3 class="angebot-name">Kurse &amp; Workshops</h3>
+        <p class="angebot-desc">GleichKlanG (Bewegte Entspannung) · AchtsamSein online · PMR · Körperglück für Frauen · Paare-Workshop · Der rote LebensFaden.</p>
       </div>
     </div>
 
     <div class="angebot-card">
       <div class="angebot-img-wrap"><img src="img/bewusstseinstraining.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
+           alt="" loading="lazy" width="201" height="226" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Bewusstseinstraining</h3>
-        <p class="angebot-desc">8 Schlüssel des Bewusstseinstrainings: von Präsenz und Akzeptanz über Selbstliebe bis hin zur Entdeckung Ihres persönlichen Lebenszwecks.</p>
-      </div>
-    </div>
-
-    <div class="angebot-card">
-      <div class="angebot-img-wrap"><img src="img/koerperglueck.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
-      <div class="angebot-body">
-        <h3 class="angebot-name">Workshops</h3>
-        <p class="angebot-desc">GleichKlanG mit Poi-Swinging · Körperglück für Frauen (Tanz, Atem, Körperarbeit) · Paare-Workshop · Der rote LebensFaden (2-Tages-Workshop).</p>
-      </div>
-    </div>
-
-    <div class="angebot-card">
-      <div class="angebot-img-wrap"><img src="img/cms_7b7422a26c22e8114d34107b5f8a4680.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
-      <div class="angebot-body">
-        <h3 class="angebot-name">Bildungs- &amp; Seminarangebote</h3>
-        <p class="angebot-desc">Konfliktmanagement: Konflikte als Chance begreifen. Motivationsmanagement: Selbstmotivation stärken und Prokrastination überwinden.</p>
+        <p class="angebot-desc">Prozessorientierte Persönlichkeitsentwicklung mit 8 Schlüsseln: von Präsenz und Akzeptanz über Selbstliebe bis zum Erkennen Ihres Lebenszwecks.</p>
       </div>
     </div>
 
     <div class="angebot-card">
       <div class="angebot-img-wrap"><img src="img/business-balance.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
+           alt="" loading="lazy" width="201" height="226" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
-        <h3 class="angebot-name">Business</h3>
-        <p class="angebot-desc">Business-Balance: Unternehmenskultur und Team-Motivation. Business &amp; Beziehung: Selbstfürsorge-Seminar für Frauen im Beruf — Stresssymptome erkennen und lösen.</p>
-      </div>
-    </div>
-
-    <div class="angebot-card">
-      <div class="angebot-img-wrap"><img src="img/cms_51ec7a499e3d9f3cadf900f5a5106d25.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
-      <div class="angebot-body">
-        <h3 class="angebot-name">Gesundheit</h3>
-        <p class="angebot-desc">Entspannungskurse und Gesundheitsförderung — als Prävention und zur nachhaltigen Stärkung Ihrer körperlichen und seelischen Ressourcen.</p>
-      </div>
-    </div>
-
-    <div class="angebot-card">
-      <div class="angebot-img-wrap"><img src="img/cms_273b301145e1b657dd6e4012d207ec78.jpg"
-           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
-      <div class="angebot-body">
-        <h3 class="angebot-name">Kooperation &amp; Train the Trainer</h3>
-        <p class="angebot-desc">Für Fachleute in Bildung und Therapie: Train-the-Trainer-Programme und Kooperationsangebote für Organisationen, Schulen und soziale Einrichtungen.</p>
+        <h3 class="angebot-name">Business &amp; Seminare</h3>
+        <p class="angebot-desc">Coaching für Selbstständige · Konfliktmanagement · Motivationsmanagement · Business-Balance für Teams · Seminare für Frauen im Beruf.</p>
       </div>
     </div>
 
   </div>
-</section>
 
-<!-- ── Bewusstseinstraining ── -->
-<section id="bewusstsein">
-  <div class="bewusstsein-layout">
-    <div class="bewusstsein-text">
-      <span class="section-overline">Training</span>
-      <h2 class="section-title gsap-fade">Die 8 Schlüssel des Bewusstseinstrainings.</h2>
-      <p class="section-body">Prozessorientierte Persönlichkeitsentwicklung bedeutet: Sie werden aktiv in Ihrer eigenen Entwicklung. Das Bewusstseinstraining gibt Ihnen konkrete Schlüssel an die Hand.</p>
-      <p class="bewusstsein-body-2">Jeder Schlüssel öffnet eine neue Ebene des Selbstverstehens — von der Wahrnehmung des gegenwärtigen Moments bis hin zum Erkennen Ihrer persönlichen Bestimmung.</p>
-      <ul class="schluessel-list">
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 01</span>
-          <div class="schluessel-name">Bewusstsein</div>
-          <div class="schluessel-desc">Präsenz &amp; Wahrnehmung — im Hier und Jetzt ankommen.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 02</span>
-          <div class="schluessel-name">Akzeptanz</div>
-          <div class="schluessel-desc">Schwierige Emotionen und Situationen annehmen, ohne zu kämpfen.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 03</span>
-          <div class="schluessel-name">Loslassen</div>
-          <div class="schluessel-desc">Sorgen, Angst und Zweifel bewusst loslassen — wie beim Jonglieren.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 04</span>
-          <div class="schluessel-name">Vergebung</div>
-          <div class="schluessel-desc">Andere und sich selbst friedlich loslassen.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 05</span>
-          <div class="schluessel-name">Gerichtete Aufmerksamkeit</div>
-          <div class="schluessel-desc">Energie folgt dem Fokus — Ziele klar ausrichten.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 06</span>
-          <div class="schluessel-name">Selbstliebe</div>
-          <div class="schluessel-desc">Die Voraussetzung für jede positive Veränderung.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 07</span>
-          <div class="schluessel-name">Energetische Signatur</div>
-          <div class="schluessel-desc">Ihre individuelle Lebensenergie erkennen und nutzen.</div>
-        </li>
-        <li class="schluessel-item">
-          <span class="schluessel-num">Schlüssel 08</span>
-          <div class="schluessel-name">Lebenszweck</div>
-          <div class="schluessel-desc">Ihre persönliche Bestimmung entdecken und leben.</div>
-        </li>
-      </ul>
-    </div>
-    <div class="bewusstsein-imgs">
-      <div class="bewusstsein-img-main-wrap"><img src="img/bewusstseinstraining.jpg"
-           alt="Bewusstseinstraining"
-           loading="lazy" width="460" height="345"
-           class="bewusstsein-img-main" onerror="this.style.opacity='0'"></div>
-      <div class="bewusstsein-img-row">
-        <div class="bewusstsein-img-wrap"><img src="img/runde-links-brehm-garten.jpg"
-             alt="Franziska Brehm im Garten"
-             loading="lazy" width="200" height="200"
-             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
-        <div class="bewusstsein-img-wrap"><img src="img/rund-lila-blume.jpg"
-             alt="Naturmotiv"
-             loading="lazy" width="200" height="200"
-             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
-        <div class="bewusstsein-img-wrap"><img src="img/schale-rund.jpg"
-             alt="Klangschale"
-             loading="lazy" width="200" height="200"
-             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
-        <div class="bewusstsein-img-wrap"><img src="img/kontakt.jpg"
-             alt="Atmosphäre"
-             loading="lazy" width="200" height="200"
-             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
-      </div>
+  <div class="angebote-weitere">
+    <p class="angebote-weitere-label">Weitere Angebote</p>
+    <div class="angebote-weitere-grid">
+      <span>Individuelles Coaching</span>
+      <span>Jongliercoaching</span>
+      <span>Gesundheitsförderung</span>
+      <span>Entspannungskurse</span>
+      <span>Kooperation &amp; Train the Trainer</span>
+      <span>Sonderangebote / Special</span>
     </div>
   </div>
 </section>
@@ -797,10 +650,6 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
     scrollTrigger: { trigger: '.angebote-grid', start: 'top 85%', once: true }
   });
 
-  const schluessel = document.querySelectorAll('.schluessel-item');
-  gsap.fromTo(schluessel, { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.06,
-    scrollTrigger: { trigger: '.schluessel-list', start: 'top 85%', once: true }
-  });
 });
 </script>
 </body>
