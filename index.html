@@ -144,9 +144,9 @@ nav.scrolled { box-shadow: 0 4px 28px rgba(21,18,16,0.10); }
 }
 .hero-content {
   position: relative; z-index: 2;
-  width: 100%; max-width: calc(100% - 340px);
+  width: 100%; max-width: 780px;
   padding-left: clamp(1.5rem, 5vw, 5rem);
-  padding-right: clamp(1rem, 2vw, 2rem);
+  padding-right: clamp(1.5rem, 5vw, 5rem);
   padding-bottom: clamp(3rem, 5vw, 5.5rem);
   display: flex; flex-direction: column;
 }
@@ -254,8 +254,11 @@ section > * { position: relative; z-index: 1; }
   transition: transform 0.4s var(--ease-card), background 0.4s var(--ease-card);
 }
 .angebot-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.09); }
-.angebot-img-wrap { aspect-ratio: 4/3; overflow: hidden; background: rgba(255,255,255,0.06); }
-.angebot-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.angebot-img-wrap {
+  height: 200px; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: rgba(255,255,255,0.04);
+}
+.angebot-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; }
 .angebot-body { padding: clamp(1.25rem, 1.8vw, 1.75rem) clamp(1rem, 1.5vw, 1.5rem) clamp(1.5rem, 2vw, 2rem); }
 .angebot-name { font-family: var(--font-serif); font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 400; color: var(--white); margin-bottom: 0.75rem; line-height: 1.3; }
 .angebot-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: rgba(255,255,255,0.72); line-height: 1.75; }
@@ -294,30 +297,28 @@ section > * { position: relative; z-index: 1; }
 @media (max-width: 900px) { .inspiration-layout { grid-template-columns: 1fr; } .inspiration-aside { display: none; } }
 
 /* ── Kontakt ── */
-#kontakt::before { content: ''; position: absolute; inset: 0; background: rgba(28,16,8,0.88); pointer-events: none; }
+#kontakt::before { content: ''; position: absolute; inset: 0; background: rgba(20,12,6,0.78); pointer-events: none; }
 .kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
 #kontakt .section-overline { color: var(--rose-pale); }
 .kontakt-info .section-title { color: var(--white); }
-.kontakt-info .section-body { color: rgba(255,255,255,0.72); }
+.kontakt-info .section-body { color: rgba(255,255,255,0.88); }
 .kontakt-details { margin-top: 2.5rem; }
-.kontakt-person { padding: 1.75rem 2rem; border-left: 2px solid var(--rose); background: rgba(255,255,255,0.04); }
-.kontakt-person-name { font-family: var(--font-serif); font-size: 1.2rem; color: var(--white); margin-bottom: 0.35rem; }
-.kontakt-person-role { font-size: 0.85rem; color: var(--rose); letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-bottom: 1.25rem; }
-.kontakt-person-tel { font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.9; }
-.kontakt-person-email { font-size: 1rem; color: var(--rose); text-decoration: none; display: flex; align-items: center; min-height: 44px; }
-.kontakt-address { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-top: 0.5rem; line-height: 1.8; }
-.kontakt-img-wrap { margin-top: 2rem; }
-.kontakt-img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center; border-top: 2px solid rgba(201,107,130,0.30); }
+.kontakt-person { padding: 1.75rem 2rem; border-left: 2px solid var(--rose); background: rgba(255,255,255,0.07); }
+.kontakt-person-name { font-family: var(--font-serif); font-size: 1.3rem; color: var(--white); margin-bottom: 0.35rem; }
+.kontakt-person-role { font-size: 0.88rem; color: var(--rose); letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-bottom: 1.25rem; }
+.kontakt-person-tel { font-size: 1.1rem; color: rgba(255,255,255,0.90); line-height: 1.9; }
+.kontakt-person-email { font-size: 1.1rem; color: var(--rose); text-decoration: none; display: flex; align-items: center; min-height: 44px; }
+.kontakt-address { font-size: 0.95rem; color: rgba(255,255,255,0.80); margin-top: 0.5rem; line-height: 1.8; }
 
 /* ── Form ── */
 .kontakt-form { display: flex; flex-direction: column; gap: 1.25rem; }
 .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-.form-group label { font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.78); }
+.form-group label { font-size: 0.88rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.90); }
 .form-group input, .form-group select, .form-group textarea {
   font-family: var(--font-sans); font-size: 1rem; font-weight: 400;
-  color: var(--white); background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.10); padding: 1rem 1.25rem;
-  min-height: 48px; border-radius: 2px; outline: none;
+  color: var(--white); background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.20); padding: 1rem 1.25rem;
+  min-height: 52px; border-radius: 2px; outline: none;
   transition: border-color 0.2s; -webkit-appearance: none;
 }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--rose); }
@@ -346,7 +347,6 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
 
 /* ── Breakpoints ── */
 @media (max-width: 900px) {
-  .hero-portrait { display: none; }
   .hero-content { max-width: 100%; }
 }
 @media (max-width: 768px) {
@@ -419,12 +419,6 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
       <span class="tag-sep" aria-hidden="true">·</span>
       <a href="#angebote" class="tag">Business</a>
     </div>
-  </div>
-  <div class="hero-portrait">
-    <img src="img/home.jpg"
-         alt="I-pro-P — Institut für prozessorientierte Persönlichkeitsentwicklung"
-         loading="eager" width="291" height="313"
-         class="hero-portrait-img" onerror="this.style.display='none'">
   </div>
 </section>
 
@@ -550,12 +544,6 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
           <p class="kontakt-address">Pfälzer Straße 2<br>06108 Halle | Saale</p>
         </div>
       </div>
-      <div class="kontakt-img-wrap">
-        <img src="img/kontakt.jpg"
-             alt="Kontakt I-pro-P"
-             loading="lazy" width="400" height="300"
-             class="kontakt-img" onerror="this.style.display='none'">
-      </div>
     </div>
     <form class="kontakt-form" onsubmit="return false;" aria-label="Kontaktformular">
       <div class="form-group">
@@ -635,7 +623,6 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
     .fromTo('.hero-sub',        { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out' }, '-=0.85')
     .fromTo('.hero-actions',    { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.68')
     .fromTo('.hero-tags',       { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'power2.out' }, '-=0.55')
-    .fromTo('.hero-portrait-img', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: 'power3.out' }, '-=1.2');
 
   document.querySelectorAll('.gsap-fade').forEach(el => {
     gsap.fromTo(el, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
