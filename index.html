@@ -1,3 +1,805 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><title>I-pro-P</title></head>
-<body><h1>I-pro-P</h1></body></html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-pro-P – Institut für prozessorientierte Persönlichkeitsentwicklung Halle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ── Tokens ── */
+:root {
+  --white: #FFFFFF;
+  --off: #F5F3EE;
+  --rose: #C96B82;
+  --rose-dark: #A04560;
+  --rose-pale: #FAF0F3;
+  --deep: #151210;
+  --mid: #36302A;
+  --muted: #7A7470;
+  --font-serif: 'Libre Baskerville', Georgia, serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --ease-organic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-ui: 220ms;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+
+/* ── Fixed background ── */
+#bgForest {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-image: url('courtyard.png');
+  background-size: cover; background-position: center;
+}
+
+/* ── Base ── */
+body {
+  background-color: var(--deep);
+  color: var(--deep);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(16px, 1vw + 0.75rem, 20px);
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Progress bar ── */
+.progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(to right, var(--rose-dark), var(--rose)); z-index: 10000; width: 0; }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(1.5rem, 5vw, 5rem);
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(21,18,16,0.08);
+  transition: box-shadow 0.35s var(--ease-organic);
+}
+nav.scrolled { box-shadow: 0 4px 28px rgba(21,18,16,0.10); }
+.nav-logo {
+  display: flex; align-items: center; gap: 0.65rem;
+  font-family: var(--font-serif); font-size: clamp(0.82rem, 1.05vw, 0.98rem);
+  font-weight: 400; color: var(--deep); text-decoration: none; white-space: nowrap;
+}
+.nav-logo-img { height: 28px; width: auto; display: block; }
+.nav-links { display: flex; gap: clamp(1.25rem, 2.5vw, 2.5rem); list-style: none; align-items: center; }
+.nav-links a {
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem); font-weight: 500; color: var(--mid);
+  text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+  transition: color var(--dur-ui) var(--ease-organic);
+  position: relative; min-height: 44px; display: inline-flex; align-items: center;
+}
+.nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 0; width: 0; height: 1px; background: var(--rose); transition: width var(--dur-ui) var(--ease-organic); }
+.nav-links a:hover { color: var(--rose); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta { color: var(--white) !important; background: var(--rose) !important; padding: 0.6rem 1.4rem !important; border-radius: 2px; transition: background var(--dur-ui) var(--ease-organic) !important; }
+.nav-cta:hover { background: var(--rose-dark) !important; }
+.nav-cta::after { display: none !important; }
+
+/* ── Hamburger ── */
+.nav-hamburger {
+  display: none; flex-direction: column; justify-content: center; align-items: center;
+  gap: 5px; width: 44px; height: 44px;
+  background: none; border: none; cursor: pointer; padding: 0; flex-shrink: 0;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--deep); border-radius: 2px; transition: transform 0.3s var(--ease-organic), opacity 0.2s; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile menu ── */
+.nav-mobile-menu {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: fixed; inset: 0; z-index: 190;
+  background: rgba(255,255,255,0.99);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.3s var(--ease-organic), visibility 0.3s;
+}
+.nav-mobile-menu.open { opacity: 1; visibility: visible; pointer-events: auto; }
+.nav-mobile-menu a {
+  font-family: var(--font-serif); font-size: clamp(1.6rem, 5vw, 2.4rem);
+  color: var(--deep); text-decoration: none;
+  padding: 1rem 2rem; min-height: 64px;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; text-align: center; letter-spacing: 0.01em;
+  border-bottom: 1px solid rgba(21,18,16,0.06);
+  transition: color var(--dur-ui);
+}
+.nav-mobile-menu a:hover { color: var(--rose); }
+.nav-mobile-menu .mobile-cta {
+  margin-top: 2rem; background: var(--rose); color: var(--white) !important;
+  border-radius: 2px; border-bottom: none; width: auto; min-width: 220px;
+  max-width: 320px; transition: background var(--dur-ui);
+}
+.nav-mobile-menu .mobile-cta:hover { background: var(--rose-dark) !important; }
+
+/* ── Hero ── */
+#hero {
+  min-height: 100vh; position: relative;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
+  padding: 0;
+}
+#hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(30,18,8,0.45) 0%,
+    rgba(30,18,8,0.20) 30%,
+    rgba(30,18,8,0.42) 58%,
+    rgba(20,10,4,0.82) 76%,
+    rgba(15,7,2,0.95) 100%
+  );
+}
+.hero-content {
+  position: relative; z-index: 2;
+  width: 100%; max-width: calc(100% - 340px);
+  padding-left: clamp(1.5rem, 5vw, 5rem);
+  padding-right: clamp(1rem, 2vw, 2rem);
+  padding-bottom: clamp(3rem, 5vw, 5.5rem);
+  display: flex; flex-direction: column;
+}
+.hero-logo-wrap { margin-bottom: 2.25rem; }
+.hero-logo-img {
+  height: 56px; width: auto; display: block;
+  filter: brightness(0) invert(1); opacity: 0.88;
+}
+.hero-overline {
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem); letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,220,225,0.92); margin-bottom: 2.5rem; display: block; font-weight: 600;
+}
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 3.8vw, 4.8rem);
+  font-weight: 400; line-height: 1.06; letter-spacing: -0.025em;
+  color: var(--white); margin-bottom: 2.5rem; max-width: 680px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.50);
+}
+.hero-sub {
+  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+  color: rgba(255,255,255,0.90); line-height: 1.82; max-width: 520px; margin-bottom: 3rem;
+}
+.hero-actions { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.hero-tags {
+  display: flex; align-items: center; flex-wrap: wrap;
+  width: 100%; max-width: 700px;
+  border-top: 1px solid rgba(255,255,255,0.16); padding-top: 1.75rem;
+}
+.tag {
+  font-size: clamp(0.88rem, 1.05vw, 1.05rem); letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.82); font-weight: 500; text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-organic);
+}
+.tag:hover { color: var(--rose); }
+.tag-sep { color: var(--rose); font-size: 0.85rem; margin: 0 0.75rem; opacity: 0.70; }
+
+/* ── Hero portrait ── */
+.hero-portrait {
+  position: absolute; right: clamp(2rem, 5vw, 5rem); bottom: 0;
+  z-index: 1; width: clamp(200px, 20vw, 300px); pointer-events: none;
+}
+.hero-portrait-img {
+  display: block; width: 100%; height: auto; max-height: 82vh;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 16%);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--rose); color: white;
+  font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  padding: 1.1rem 2.6rem; border-radius: 2px; min-height: 52px;
+  box-shadow: 0 2px 16px rgba(184,114,138,0.35);
+  transition: background var(--dur-ui) var(--ease-organic), box-shadow var(--dur-ui) var(--ease-organic), transform var(--dur-ui) var(--ease-organic);
+}
+.btn-primary:hover { background: var(--rose-dark); box-shadow: 0 8px 28px rgba(184,114,138,0.50); transform: translateY(-2px); }
+.btn-secondary {
+  font-size: 0.88rem; font-weight: 400; color: rgba(255,255,255,0.82);
+  text-decoration: none; letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 2px;
+  min-height: 44px; display: inline-flex; align-items: center;
+  transition: color var(--dur-ui) var(--ease-organic), border-color var(--dur-ui) var(--ease-organic);
+}
+.btn-secondary:hover { color: rgba(255,255,255,0.95); border-color: rgba(255,255,255,0.60); }
+
+/* ── Sections ── */
+section { padding: clamp(3.5rem, 7vw, 7rem) clamp(1.5rem, 5vw, 5rem); position: relative; }
+section > * { position: relative; z-index: 1; }
+.section-overline { font-size: clamp(1.05rem, 1.35vw, 1.5rem); letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose-dark); font-weight: 500; margin-bottom: 2rem; display: block; }
+.section-title { font-family: var(--font-serif); font-size: clamp(2rem, 3.2vw, 3.8rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.01em; color: var(--deep); margin-bottom: 2.5rem; }
+.section-body { font-size: clamp(1.05rem, 1.4vw, 1.3rem); color: var(--mid); line-height: 1.95; max-width: 580px; }
+
+/* ── Franziska / Über mich ── */
+#franziska { overflow: hidden; }
+#franziska::before { content: ''; position: absolute; inset: 0; background: rgba(245,238,228,0.88); pointer-events: none; }
+.franziska-layout { display: grid; grid-template-columns: 1fr 340px; gap: clamp(3rem, 6vw, 7rem); align-items: start; }
+.franziska-text .section-body { max-width: 100%; }
+.franziska-body-2 { font-size: clamp(1.05rem, 1.4vw, 1.3rem); color: var(--mid); line-height: 1.95; margin-top: 1.75rem; }
+.franziska-qualifications { list-style: none; margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.franziska-qualifications li { font-size: clamp(1rem, 1.25vw, 1.2rem); color: var(--mid); padding-left: 1.5rem; position: relative; line-height: 1.7; }
+.franziska-qualifications li::before { content: '·'; position: absolute; left: 0; color: var(--rose); font-size: 1.2em; }
+.franziska-photo {
+  display: block; width: 100%; height: auto; max-height: 600px;
+  object-fit: cover; object-position: center top;
+  border-radius: 2px; border-top: 3px solid var(--rose);
+  box-shadow: 0 4px 24px rgba(21,18,16,0.12); margin-bottom: 2.5rem;
+}
+.franziska-home-img {
+  display: block; width: 100%; aspect-ratio: 4/3;
+  object-fit: cover; object-position: center;
+  border-top: 2px solid rgba(160,69,96,0.30);
+  margin-top: 0;
+}
+@media (max-width: 900px) { .franziska-layout { grid-template-columns: 1fr; } .franziska-aside { display: none; } }
+
+/* ── Angebote ── */
+#angebote { overflow: hidden; }
+#angebote::before { content: ''; position: absolute; inset: 0; background: rgba(28,16,8,0.84); pointer-events: none; }
+#angebote .section-overline { color: var(--rose-pale); }
+#angebote .section-title { color: var(--white); }
+#angebote .section-body { color: rgba(255,255,255,0.82); }
+.angebote-header { margin-bottom: clamp(2.5rem, 4vw, 4rem); }
+.angebote-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.75rem, 1.5vw, 1.5rem); }
+.angebot-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-top: 3px solid var(--rose);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-card), background 0.4s var(--ease-card);
+}
+.angebot-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.09); }
+.angebot-img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center; }
+.angebot-body { padding: clamp(1.25rem, 1.8vw, 1.75rem) clamp(1rem, 1.5vw, 1.5rem) clamp(1.5rem, 2vw, 2rem); }
+.angebot-name { font-family: var(--font-serif); font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 400; color: var(--white); margin-bottom: 0.75rem; line-height: 1.3; }
+.angebot-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: rgba(255,255,255,0.72); line-height: 1.75; }
+@media (max-width: 1024px) { .angebote-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .angebote-grid { grid-template-columns: 1fr; } }
+
+/* ── Bewusstseinstraining — 8 Schlüssel ── */
+#bewusstsein { overflow: hidden; }
+#bewusstsein::before { content: ''; position: absolute; inset: 0; background: rgba(245,238,228,0.88); pointer-events: none; }
+#bewusstsein .section-overline { color: var(--rose-dark); }
+#bewusstsein .section-title { color: var(--deep); }
+.bewusstsein-layout { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 7rem); align-items: start; }
+.bewusstsein-text .section-body { max-width: 100%; }
+.bewusstsein-body-2 { font-size: clamp(1.05rem, 1.4vw, 1.3rem); color: var(--mid); line-height: 1.95; margin-top: 1.75rem; margin-bottom: 2.5rem; }
+.schluessel-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.schluessel-item { padding: 1.25rem 1.5rem; background: var(--white); border-left: 3px solid var(--rose); box-shadow: 0 2px 12px rgba(21,18,16,0.06); }
+.schluessel-num { font-family: var(--font-serif); font-size: 0.78rem; color: var(--rose-dark); letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.25rem; }
+.schluessel-name { font-family: var(--font-serif); font-size: clamp(1rem, 1.3vw, 1.15rem); color: var(--deep); font-weight: 400; margin-bottom: 0.3rem; }
+.schluessel-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: var(--muted); line-height: 1.65; }
+.bewusstsein-imgs { display: flex; flex-direction: column; gap: 1.5rem; }
+.bewusstsein-img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.bewusstsein-img {
+  display: block; width: 100%; aspect-ratio: 1/1;
+  object-fit: cover; object-position: center;
+  border-radius: 50%; border: 3px solid rgba(201,107,130,0.25);
+}
+.bewusstsein-img-main {
+  display: block; width: 100%; aspect-ratio: 4/3;
+  object-fit: cover; object-position: center;
+  border-top: 2px solid var(--rose);
+}
+@media (max-width: 900px) { .bewusstsein-layout { grid-template-columns: 1fr; } .bewusstsein-imgs { display: none; } }
+
+/* ── Inspiration ── */
+#inspiration { overflow: hidden; }
+#inspiration::before { content: ''; position: absolute; inset: 0; background: rgba(28,16,8,0.84); pointer-events: none; }
+#inspiration .section-overline { color: var(--rose-pale); }
+#inspiration .section-title { color: var(--white); }
+.inspiration-layout { display: grid; grid-template-columns: 1fr 380px; gap: clamp(3rem, 6vw, 7rem); align-items: center; }
+.inspiration-text .section-body { color: rgba(255,255,255,0.82); max-width: 100%; }
+.inspiration-quote { border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12); padding: clamp(1.75rem, 2.5vw, 2.5rem) 0; margin-bottom: 2.5rem; margin-top: 2rem; }
+.inspiration-quote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.1rem, 1.5vw, 1.35rem); color: rgba(255,255,255,0.88); line-height: 1.75; }
+.inspiration-img {
+  display: block; width: 100%; height: auto;
+  border-top: 3px solid var(--rose);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+}
+.btn-download {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.90);
+  border: 1px solid rgba(255,255,255,0.18); border-radius: 2px;
+  font-family: var(--font-sans); font-size: 0.88rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  padding: 1rem 2rem; min-height: 52px;
+  transition: background var(--dur-ui), border-color var(--dur-ui);
+}
+.btn-download:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); }
+@media (max-width: 900px) { .inspiration-layout { grid-template-columns: 1fr; } .inspiration-aside { display: none; } }
+
+/* ── Kontakt ── */
+#kontakt::before { content: ''; position: absolute; inset: 0; background: rgba(28,16,8,0.88); pointer-events: none; }
+.kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+#kontakt .section-overline { color: var(--rose-pale); }
+.kontakt-info .section-title { color: var(--white); }
+.kontakt-info .section-body { color: rgba(255,255,255,0.72); }
+.kontakt-details { margin-top: 2.5rem; }
+.kontakt-person { padding: 1.75rem 2rem; border-left: 2px solid var(--rose); background: rgba(255,255,255,0.04); }
+.kontakt-person-name { font-family: var(--font-serif); font-size: 1.2rem; color: var(--white); margin-bottom: 0.35rem; }
+.kontakt-person-role { font-size: 0.85rem; color: var(--rose); letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-bottom: 1.25rem; }
+.kontakt-person-tel { font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.9; }
+.kontakt-person-email { font-size: 1rem; color: var(--rose); text-decoration: none; display: flex; align-items: center; min-height: 44px; }
+.kontakt-address { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-top: 0.5rem; line-height: 1.8; }
+.kontakt-img-wrap { margin-top: 2rem; }
+.kontakt-img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center; border-top: 2px solid rgba(201,107,130,0.30); }
+
+/* ── Form ── */
+.kontakt-form { display: flex; flex-direction: column; gap: 1.25rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label { font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.78); }
+.form-group input, .form-group select, .form-group textarea {
+  font-family: var(--font-sans); font-size: 1rem; font-weight: 400;
+  color: var(--white); background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10); padding: 1rem 1.25rem;
+  min-height: 48px; border-radius: 2px; outline: none;
+  transition: border-color 0.2s; -webkit-appearance: none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--rose); }
+.form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.32); }
+.form-group select option { background: var(--deep); }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-submit {
+  background: var(--rose); color: white; border: none;
+  font-family: var(--font-sans); font-size: 0.88rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1.1rem 2.5rem; border-radius: 2px; cursor: pointer;
+  align-self: flex-start; min-height: 52px;
+  box-shadow: 0 2px 12px rgba(184,114,138,0.30);
+  transition: background var(--dur-ui) var(--ease-organic), box-shadow var(--dur-ui) var(--ease-organic), transform var(--dur-ui) var(--ease-organic);
+}
+.form-submit:hover { background: var(--rose-dark); box-shadow: 0 6px 20px rgba(184,114,138,0.44); transform: translateY(-1px); }
+.form-privacy { font-size: 0.82rem; color: rgba(255,255,255,0.58); margin-top: 0.5rem; line-height: 1.65; }
+.form-privacy a { color: rgba(255,255,255,0.72); }
+
+/* ── Footer ── */
+footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+.footer-logo { font-family: var(--font-serif); font-size: 1rem; color: rgba(255,255,255,0.68); }
+.footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+.footer-links a { font-size: 0.85rem; color: rgba(255,255,255,0.58); text-decoration: none; letter-spacing: 0.06em; min-height: 44px; display: inline-flex; align-items: center; transition: color 0.2s; }
+.footer-links a:hover { color: var(--rose); }
+
+/* ── Breakpoints ── */
+@media (max-width: 900px) {
+  .hero-portrait { display: none; }
+  .hero-content { max-width: 100%; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero-actions { flex-direction: column; align-items: flex-start; width: 100%; gap: 1rem; }
+  .hero-actions .btn-primary { width: 100%; max-width: 320px; }
+  .kontakt-grid { grid-template-columns: 1fr; gap: 2rem; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+@media (max-width: 480px) {
+  .hero-headline { line-height: 1.1; }
+  .btn-primary { padding: 1rem 2rem; }
+}
+</style>
+</head>
+<body>
+<div id="bgForest" aria-hidden="true"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <img src="https://www.i-pro-p.de/images/logo.png" alt="I-pro-P Logo" class="nav-logo-img" width="28" height="28">
+    I-pro-P · Halle
+  </a>
+  <ul class="nav-links">
+    <li><a href="#franziska">Franziska Brehm</a></li>
+    <li><a href="#angebote">Angebote</a></li>
+    <li><a href="#bewusstsein">Training</a></li>
+    <li><a href="#inspiration">Inspiration</a></li>
+    <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburgerBtn"
+    aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile-menu" id="mobileMenu" role="dialog" aria-label="Hauptnavigation">
+  <a href="#franziska" class="mobile-nav-link">Franziska Brehm</a>
+  <a href="#angebote" class="mobile-nav-link">Angebote</a>
+  <a href="#bewusstsein" class="mobile-nav-link">Training</a>
+  <a href="#inspiration" class="mobile-nav-link">Inspiration</a>
+  <a href="#kontakt" class="mobile-nav-link mobile-cta">Kontakt</a>
+</div>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-logo-wrap">
+      <img src="https://www.i-pro-p.de/images/logo-gross.jpg"
+           alt="I-pro-P — Institut für prozessorientierte Persönlichkeitsentwicklung"
+           loading="eager" width="160" height="56"
+           class="hero-logo-img">
+    </div>
+    <span class="hero-overline">Institut · Halle (Saale) · Pfälzer Straße 2</span>
+    <h1 class="hero-headline">Persönlichkeit, die in Bewegung kommt.</h1>
+    <p class="hero-sub">Herzlich willkommen beim Institut für prozessorientierte Persönlichkeitsentwicklung. Ich begleite Sie auf Ihrem Weg zu persönlichem Wachstum — individuell, ganzheitlich und mit einem einzigartigen Methodenmix aus Coaching, Bewegung und Kreativität.</p>
+    <div class="hero-actions">
+      <a href="#kontakt" class="btn-primary">Termin anfragen</a>
+      <a href="#angebote" class="btn-secondary">Alle Angebote</a>
+    </div>
+    <div class="hero-tags" aria-label="Angebotsschwerpunkte">
+      <a href="#angebote" class="tag">Coaching</a>
+      <span class="tag-sep" aria-hidden="true">·</span>
+      <a href="#angebote" class="tag">Kurse</a>
+      <span class="tag-sep" aria-hidden="true">·</span>
+      <a href="#bewusstsein" class="tag">Training</a>
+      <span class="tag-sep" aria-hidden="true">·</span>
+      <a href="#angebote" class="tag">Workshops</a>
+      <span class="tag-sep" aria-hidden="true">·</span>
+      <a href="#angebote" class="tag">Business</a>
+    </div>
+  </div>
+  <div class="hero-portrait">
+    <img src="https://www.i-pro-p.de/upload/bilder/franziska-brehm-portrait.jpg"
+         alt="Franziska Brehm, Diplom-Pädagogin und Coach"
+         loading="eager" width="300" height="400"
+         class="hero-portrait-img">
+  </div>
+</section>
+
+<!-- ── Franziska Brehm ── -->
+<section id="franziska">
+  <div class="franziska-layout">
+    <div class="franziska-text">
+      <span class="section-overline">Persönliches</span>
+      <h2 class="section-title gsap-fade">Franziska Brehm — Beraterin, Coach und Trainerin.</h2>
+      <p class="section-body">Als Diplom-Pädagogin und staatlich anerkannte Sozialpädagogin verbinde ich klassische Beratungsmethoden mit einem einzigartigen Ansatz: Ich bringe äußere und innere Bewegung zusammen und schaffe so einen kraftvollen Weg der Selbstentdeckung.</p>
+      <p class="franziska-body-2">Was mich von anderen unterscheidet: Ich nutze Bewegung, Jonglage und kreative Ausdrucksformen als Wege zur Persönlichkeitsentwicklung. Als Feuerkünstlerin und Lichtshowperformerin weiß ich, dass echte Veränderung Mut, Übung und die Bereitschaft braucht, loszulassen — und neu zu fangen.</p>
+      <ul class="franziska-qualifications">
+        <li>Diplom-Pädagogin</li>
+        <li>Staatlich anerkannte Sozialpädagogin</li>
+        <li>Kausaltrainerin</li>
+        <li>Jugendgruppenleiterin &amp; Kinderyogalehrerin</li>
+        <li>Mediation und Konfliktmanagement</li>
+        <li>Zeit-, Selbst- &amp; Teammanagement</li>
+        <li>Bewusstseinstraining &amp; Körpersprache</li>
+        <li>Meditation, Tai Chi, Historische Kampfkünste</li>
+        <li>Feuerkünstlerin / Lichtshowperformerin</li>
+        <li>Freier, intuitiver Tanz</li>
+      </ul>
+    </div>
+    <div class="franziska-aside">
+      <img src="https://www.i-pro-p.de/upload/bilder/franziska-brehm-portrait.jpg"
+           alt="Franziska Brehm"
+           loading="lazy" width="340" height="453"
+           class="franziska-photo">
+      <img src="https://www.i-pro-p.de/images/home.jpg"
+           alt="I-pro-P Institut"
+           loading="lazy" width="340" height="255"
+           class="franziska-home-img">
+    </div>
+  </div>
+</section>
+
+<!-- ── Angebote ── -->
+<section id="angebote">
+  <div class="angebote-header">
+    <span class="section-overline">Angebote</span>
+    <h2 class="section-title gsap-fade">Kompetenz. Ganzheitlicher Ansatz. Methodenvielfalt.</h2>
+    <p class="section-body">Von Einzel-Coaching bis Business-Seminar — meine Angebote verbinden bewährte Methoden mit innovativen Zugängen. Gemeinsam finden wir den richtigen Weg für Sie.</p>
+  </div>
+  <div class="angebote-grid">
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
+           alt="Coaching" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Coaching</h3>
+        <p class="angebot-desc">Individuelles Kreativ-Coaching zu Lebensgestaltung, Karriere, Kommunikation, Führung, Zeit- und Stressmanagement. Inkl. Jongliercoaching — Hindernisse mit Leichtigkeit überwinden.</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/images/koerperglueck.jpg"
+           alt="Kurse" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Kurse</h3>
+        <p class="angebot-desc">GleichKlanG (Bewegte Entspannung, 5 Wochen) · AchtsamSein online · Progressive Muskelentspannung · Spiel und Freude unterm Regenbogen für Kinder ab 7.</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
+           alt="Training" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Bewusstseinstraining</h3>
+        <p class="angebot-desc">8 Schlüssel des Bewusstseinstrainings: von Präsenz und Akzeptanz über Selbstliebe bis hin zur Entdeckung Ihres persönlichen Lebenszwecks.</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/images/koerperglueck.jpg"
+           alt="Workshops" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Workshops</h3>
+        <p class="angebot-desc">GleichKlanG mit Poi-Swinging · Körperglück für Frauen (Tanz, Atem, Körperarbeit) · Paare-Workshop · Der rote LebensFaden (2-Tages-Workshop).</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/cms/cache/7b7422a26c22e8114d34107b5f8a4680.jpg"
+           alt="Bildungs- und Seminarangebote" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Bildungs- &amp; Seminarangebote</h3>
+        <p class="angebot-desc">Konfliktmanagement: Konflikte als Chance begreifen. Motivationsmanagement: Selbstmotivation stärken und Prokrastination überwinden.</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/images/business-balance.jpg"
+           alt="Business" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Business</h3>
+        <p class="angebot-desc">Business-Balance: Unternehmenskultur und Team-Motivation. Business &amp; Beziehung: Selbstfürsorge-Seminar für Frauen im Beruf — Stresssymptome erkennen und lösen.</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/cms/cache/51ec7a499e3d9f3cadf900f5a5106d25.jpg"
+           alt="Gesundheit" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Gesundheit</h3>
+        <p class="angebot-desc">Entspannungskurse und Gesundheitsförderung — als Prävention und zur nachhaltigen Stärkung Ihrer körperlichen und seelischen Ressourcen.</p>
+      </div>
+    </div>
+
+    <div class="angebot-card">
+      <img src="https://www.i-pro-p.de/cms/cache/273b301145e1b657dd6e4012d207ec78.jpg"
+           alt="Kooperation" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-body">
+        <h3 class="angebot-name">Kooperation &amp; Train the Trainer</h3>
+        <p class="angebot-desc">Für Fachleute in Bildung und Therapie: Train-the-Trainer-Programme und Kooperationsangebote für Organisationen, Schulen und soziale Einrichtungen.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Bewusstseinstraining ── -->
+<section id="bewusstsein">
+  <div class="bewusstsein-layout">
+    <div class="bewusstsein-text">
+      <span class="section-overline">Training</span>
+      <h2 class="section-title gsap-fade">Die 8 Schlüssel des Bewusstseinstrainings.</h2>
+      <p class="section-body">Prozessorientierte Persönlichkeitsentwicklung bedeutet: Sie werden aktiv in Ihrer eigenen Entwicklung. Das Bewusstseinstraining gibt Ihnen konkrete Schlüssel an die Hand.</p>
+      <p class="bewusstsein-body-2">Jeder Schlüssel öffnet eine neue Ebene des Selbstverstehens — von der Wahrnehmung des gegenwärtigen Moments bis hin zum Erkennen Ihrer persönlichen Bestimmung.</p>
+      <ul class="schluessel-list">
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 01</span>
+          <div class="schluessel-name">Bewusstsein</div>
+          <div class="schluessel-desc">Präsenz &amp; Wahrnehmung — im Hier und Jetzt ankommen.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 02</span>
+          <div class="schluessel-name">Akzeptanz</div>
+          <div class="schluessel-desc">Schwierige Emotionen und Situationen annehmen, ohne zu kämpfen.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 03</span>
+          <div class="schluessel-name">Loslassen</div>
+          <div class="schluessel-desc">Sorgen, Angst und Zweifel bewusst loslassen — wie beim Jonglieren.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 04</span>
+          <div class="schluessel-name">Vergebung</div>
+          <div class="schluessel-desc">Andere und sich selbst friedlich loslassen.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 05</span>
+          <div class="schluessel-name">Gerichtete Aufmerksamkeit</div>
+          <div class="schluessel-desc">Energie folgt dem Fokus — Ziele klar ausrichten.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 06</span>
+          <div class="schluessel-name">Selbstliebe</div>
+          <div class="schluessel-desc">Die Voraussetzung für jede positive Veränderung.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 07</span>
+          <div class="schluessel-name">Energetische Signatur</div>
+          <div class="schluessel-desc">Ihre individuelle Lebensenergie erkennen und nutzen.</div>
+        </li>
+        <li class="schluessel-item">
+          <span class="schluessel-num">Schlüssel 08</span>
+          <div class="schluessel-name">Lebenszweck</div>
+          <div class="schluessel-desc">Ihre persönliche Bestimmung entdecken und leben.</div>
+        </li>
+      </ul>
+    </div>
+    <div class="bewusstsein-imgs">
+      <img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
+           alt="Bewusstseinstraining"
+           loading="lazy" width="460" height="345"
+           class="bewusstsein-img-main">
+      <div class="bewusstsein-img-row">
+        <img src="https://www.i-pro-p.de/runde-links-brehm-garten.jpg"
+             alt="Franziska Brehm im Garten"
+             loading="lazy" width="200" height="200"
+             class="bewusstsein-img">
+        <img src="https://www.i-pro-p.de/rund-lila-blume.jpg"
+             alt="Naturmotiv"
+             loading="lazy" width="200" height="200"
+             class="bewusstsein-img">
+        <img src="https://www.i-pro-p.de/schale-rund.jpg"
+             alt="Klangschale"
+             loading="lazy" width="200" height="200"
+             class="bewusstsein-img">
+        <img src="https://www.i-pro-p.de/kontakt.jpg"
+             alt="Atmosphäre"
+             loading="lazy" width="200" height="200"
+             class="bewusstsein-img">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Inspiration ── -->
+<section id="inspiration">
+  <div class="inspiration-layout">
+    <div class="inspiration-text">
+      <span class="section-overline">Inspiration</span>
+      <h2 class="section-title gsap-fade">12 Affirmationskärtchen — kostenloser Download.</h2>
+      <p class="section-body">Manchmal brauchen wir etwas Inspirierendes, um die eigenen Gedanken oder unsere momentane Lebenssituation wieder in eine positive Richtung zu lenken.</p>
+      <div class="inspiration-quote">
+        <p>„Manchmal brauchen wir etwas Inspirierendes, um die eigenen Gedanken oder unsere momentane Lebenssituation wieder in eine positive Richtung zu lenken."</p>
+      </div>
+      <p class="section-body" style="margin-bottom: 2.5rem;">12 illustrierte Affirmationskärtchen als PDF — zum Ausdrucken, Aufstellen und täglichen Begleiten. Ein kleines Geschenk für Ihren Weg.</p>
+      <a href="https://www.i-pro-p.de/upload/pdf/Inspiration_Affirmationskaertchen.pdf"
+         target="_blank" rel="noopener" class="btn-download">
+        PDF herunterladen
+      </a>
+    </div>
+    <div class="inspiration-aside">
+      <img src="https://www.i-pro-p.de/upload/bilder/kaertchen.jpg"
+           alt="Affirmationskärtchen von I-pro-P"
+           loading="lazy" width="380" height="285"
+           class="inspiration-img">
+    </div>
+  </div>
+</section>
+
+<!-- ── Kontakt ── -->
+<section id="kontakt">
+  <div class="kontakt-grid">
+    <div class="kontakt-info">
+      <span class="section-overline">Kontakt</span>
+      <h2 class="section-title gsap-fade">Ich freue mich auf Ihre Nachricht.</h2>
+      <p class="section-body">Nehmen Sie Kontakt auf — für ein erstes Gespräch, eine Anfrage oder einfach um mehr zu erfahren. Ich melde mich zeitnah bei Ihnen.</p>
+      <div class="kontakt-details">
+        <div class="kontakt-person">
+          <p class="kontakt-person-name">Franziska Brehm</p>
+          <span class="kontakt-person-role">Diplom-Pädagogin · Coach · Trainerin</span>
+          <p class="kontakt-person-tel">0345 | 678 68 68</p>
+          <a href="mailto:info@i-pro-p.de" class="kontakt-person-email">info@i-pro-p.de</a>
+          <p class="kontakt-address">Pfälzer Straße 2<br>06108 Halle | Saale</p>
+        </div>
+      </div>
+      <div class="kontakt-img-wrap">
+        <img src="https://www.i-pro-p.de/kontakt.jpg"
+             alt="Kontakt I-pro-P"
+             loading="lazy" width="400" height="300"
+             class="kontakt-img">
+      </div>
+    </div>
+    <form class="kontakt-form" onsubmit="return false;" aria-label="Kontaktformular">
+      <div class="form-group">
+        <label for="f-name">Name</label>
+        <input id="f-name" type="text" name="name" placeholder="Ihr vollständiger Name" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="f-email">E-Mail</label>
+        <input id="f-email" type="email" name="email" placeholder="ihre@email.de" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="f-tel">Telefon</label>
+        <input id="f-tel" type="tel" name="telefon" placeholder="Ihre Telefonnummer" autocomplete="tel">
+      </div>
+      <div class="form-group">
+        <label for="f-interesse">Ich interessiere mich für</label>
+        <select id="f-interesse" name="interesse">
+          <option value="">Bitte wählen …</option>
+          <option>Erstgespräch / Beratung</option>
+          <option>Coaching (Einzel)</option>
+          <option>Kurs (GleichKlanG / AchtsamSein / PMR)</option>
+          <option>Bewusstseinstraining</option>
+          <option>Workshop</option>
+          <option>Seminar (Konflikt / Motivation)</option>
+          <option>Business-Angebot</option>
+          <option>Kooperation / Train the Trainer</option>
+          <option>Sonstiges</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="f-nachricht">Nachricht</label>
+        <textarea id="f-nachricht" name="nachricht" placeholder="Ihr Anliegen …"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Nachricht senden</button>
+      <p class="form-privacy">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten zur Bearbeitung Ihrer Anfrage zu. <a href="#">Datenschutz</a></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">I-pro-P · Institut für prozessorientierte Persönlichkeitsentwicklung</p>
+  <div class="footer-links">
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutz</a>
+    <a href="#">Links</a>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to('#progressBar', { width: '100%', ease: 'none', scrollTrigger: { scrub: 0.3, start: 'top top', end: 'bottom bottom' }});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileMenu   = document.getElementById('mobileMenu');
+function toggleMenu(open) {
+  hamburgerBtn.setAttribute('aria-expanded', String(open));
+  hamburgerBtn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+  mobileMenu.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+hamburgerBtn.addEventListener('click', () => toggleMenu(hamburgerBtn.getAttribute('aria-expanded') !== 'true'));
+document.querySelectorAll('.mobile-nav-link').forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
+
+const mm = gsap.matchMedia();
+mm.add('(prefers-reduced-motion: no-preference)', () => {
+
+  gsap.timeline({ delay: 0.3 })
+    .fromTo('.hero-logo-wrap',  { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' })
+    .fromTo('.hero-overline',   { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out' }, '-=0.5')
+    .fromTo('.hero-headline',   { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.3, ease: 'power3.out' }, '-=0.75')
+    .fromTo('.hero-sub',        { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out' }, '-=0.85')
+    .fromTo('.hero-actions',    { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.68')
+    .fromTo('.hero-tags',       { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'power2.out' }, '-=0.55')
+    .fromTo('.hero-portrait-img', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: 'power3.out' }, '-=1.2');
+
+  document.querySelectorAll('.gsap-fade').forEach(el => {
+    gsap.fromTo(el, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+    });
+  });
+
+  const angebotCards = document.querySelectorAll('.angebot-card');
+  gsap.fromTo(angebotCards, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0,
+    onStart()    { angebotCards.forEach(c => { c.style.willChange = 'transform'; }); },
+    onComplete() { angebotCards.forEach(c => { c.style.willChange = 'auto'; }); },
+    scrollTrigger: { trigger: '.angebote-grid', start: 'top 85%', once: true }
+  });
+
+  const schluessel = document.querySelectorAll('.schluessel-item');
+  gsap.fromTo(schluessel, { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.06,
+    scrollTrigger: { trigger: '.schluessel-list', start: 'top 85%', once: true }
+  });
+});
+</script>
+</body>
+</html>
