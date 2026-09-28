@@ -261,7 +261,8 @@ section > * { position: relative; z-index: 1; }
   transition: transform 0.4s var(--ease-card), background 0.4s var(--ease-card);
 }
 .angebot-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.09); }
-.angebot-img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center; }
+.angebot-img-wrap { aspect-ratio: 4/3; overflow: hidden; background: rgba(255,255,255,0.06); }
+.angebot-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .angebot-body { padding: clamp(1.25rem, 1.8vw, 1.75rem) clamp(1rem, 1.5vw, 1.5rem) clamp(1.5rem, 2vw, 2rem); }
 .angebot-name { font-family: var(--font-serif); font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 400; color: var(--white); margin-bottom: 0.75rem; line-height: 1.3; }
 .angebot-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: rgba(255,255,255,0.72); line-height: 1.75; }
@@ -283,16 +284,17 @@ section > * { position: relative; z-index: 1; }
 .schluessel-desc { font-size: clamp(0.88rem, 1vw, 1rem); color: var(--muted); line-height: 1.65; }
 .bewusstsein-imgs { display: flex; flex-direction: column; gap: 1.5rem; }
 .bewusstsein-img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.bewusstsein-img-wrap {
+  aspect-ratio: 1/1; overflow: hidden; border-radius: 50%;
+  border: 3px solid rgba(201,107,130,0.25);
+  background: rgba(245,238,228,0.10);
+}
 .bewusstsein-img {
-  display: block; width: 100%; aspect-ratio: 1/1;
+  display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: center;
-  border-radius: 50%; border: 3px solid rgba(201,107,130,0.25);
 }
-.bewusstsein-img-main {
-  display: block; width: 100%; aspect-ratio: 4/3;
-  object-fit: cover; object-position: center;
-  border-top: 2px solid var(--rose);
-}
+.bewusstsein-img-main-wrap { aspect-ratio: 4/3; overflow: hidden; background: rgba(245,238,228,0.06); border-top: 2px solid var(--rose); }
+.bewusstsein-img-main { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 @media (max-width: 900px) { .bewusstsein-layout { grid-template-columns: 1fr; } .bewusstsein-imgs { display: none; } }
 
 /* ── Inspiration ── */
@@ -398,7 +400,7 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
 
 <nav id="mainNav">
   <a href="#" class="nav-logo">
-    <img src="https://www.i-pro-p.de/images/logo.png" alt="I-pro-P Logo" class="nav-logo-img" width="28" height="28">
+    <img src="https://www.i-pro-p.de/images/logo.png" alt="I-pro-P Logo" class="nav-logo-img" width="28" height="28" onerror="this.style.display='none'">
     I-pro-P · Halle
   </a>
   <ul class="nav-links">
@@ -429,7 +431,7 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
       <img src="https://www.i-pro-p.de/images/logo-gross.jpg"
            alt="I-pro-P — Institut für prozessorientierte Persönlichkeitsentwicklung"
            loading="eager" width="160" height="56"
-           class="hero-logo-img">
+           class="hero-logo-img" onerror="this.style.display='none'">
     </div>
     <span class="hero-overline">Institut · Halle (Saale) · Pfälzer Straße 2</span>
     <h1 class="hero-headline">Persönlichkeit, die in Bewegung kommt.</h1>
@@ -454,7 +456,7 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     <img src="https://www.i-pro-p.de/upload/bilder/franziska-brehm-portrait.jpg"
          alt="Franziska Brehm, Diplom-Pädagogin und Coach"
          loading="eager" width="300" height="400"
-         class="hero-portrait-img">
+         class="hero-portrait-img" onerror="this.style.display='none'">
   </div>
 </section>
 
@@ -483,11 +485,11 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
       <img src="https://www.i-pro-p.de/upload/bilder/franziska-brehm-portrait.jpg"
            alt="Franziska Brehm"
            loading="lazy" width="340" height="453"
-           class="franziska-photo">
+           class="franziska-photo" onerror="this.style.display='none'">
       <img src="https://www.i-pro-p.de/images/home.jpg"
            alt="I-pro-P Institut"
            loading="lazy" width="340" height="255"
-           class="franziska-home-img">
+           class="franziska-home-img" onerror="this.style.display='none'">
     </div>
   </div>
 </section>
@@ -502,8 +504,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
   <div class="angebote-grid">
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
-           alt="Coaching" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Coaching</h3>
         <p class="angebot-desc">Individuelles Kreativ-Coaching zu Lebensgestaltung, Karriere, Kommunikation, Führung, Zeit- und Stressmanagement. Inkl. Jongliercoaching — Hindernisse mit Leichtigkeit überwinden.</p>
@@ -511,8 +513,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/images/koerperglueck.jpg"
-           alt="Kurse" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/images/koerperglueck.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Kurse</h3>
         <p class="angebot-desc">GleichKlanG (Bewegte Entspannung, 5 Wochen) · AchtsamSein online · Progressive Muskelentspannung · Spiel und Freude unterm Regenbogen für Kinder ab 7.</p>
@@ -520,8 +522,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
-           alt="Training" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Bewusstseinstraining</h3>
         <p class="angebot-desc">8 Schlüssel des Bewusstseinstrainings: von Präsenz und Akzeptanz über Selbstliebe bis hin zur Entdeckung Ihres persönlichen Lebenszwecks.</p>
@@ -529,8 +531,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/images/koerperglueck.jpg"
-           alt="Workshops" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/images/koerperglueck.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Workshops</h3>
         <p class="angebot-desc">GleichKlanG mit Poi-Swinging · Körperglück für Frauen (Tanz, Atem, Körperarbeit) · Paare-Workshop · Der rote LebensFaden (2-Tages-Workshop).</p>
@@ -538,8 +540,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/cms/cache/7b7422a26c22e8114d34107b5f8a4680.jpg"
-           alt="Bildungs- und Seminarangebote" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/cms/cache/7b7422a26c22e8114d34107b5f8a4680.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Bildungs- &amp; Seminarangebote</h3>
         <p class="angebot-desc">Konfliktmanagement: Konflikte als Chance begreifen. Motivationsmanagement: Selbstmotivation stärken und Prokrastination überwinden.</p>
@@ -547,8 +549,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/images/business-balance.jpg"
-           alt="Business" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/images/business-balance.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Business</h3>
         <p class="angebot-desc">Business-Balance: Unternehmenskultur und Team-Motivation. Business &amp; Beziehung: Selbstfürsorge-Seminar für Frauen im Beruf — Stresssymptome erkennen und lösen.</p>
@@ -556,8 +558,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/cms/cache/51ec7a499e3d9f3cadf900f5a5106d25.jpg"
-           alt="Gesundheit" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/cms/cache/51ec7a499e3d9f3cadf900f5a5106d25.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Gesundheit</h3>
         <p class="angebot-desc">Entspannungskurse und Gesundheitsförderung — als Prävention und zur nachhaltigen Stärkung Ihrer körperlichen und seelischen Ressourcen.</p>
@@ -565,8 +567,8 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
     </div>
 
     <div class="angebot-card">
-      <img src="https://www.i-pro-p.de/cms/cache/273b301145e1b657dd6e4012d207ec78.jpg"
-           alt="Kooperation" loading="lazy" width="400" height="300" class="angebot-img">
+      <div class="angebot-img-wrap"><img src="https://www.i-pro-p.de/cms/cache/273b301145e1b657dd6e4012d207ec78.jpg"
+           alt="" loading="lazy" width="400" height="300" class="angebot-img" onerror="this.style.opacity='0'"></div>
       <div class="angebot-body">
         <h3 class="angebot-name">Kooperation &amp; Train the Trainer</h3>
         <p class="angebot-desc">Für Fachleute in Bildung und Therapie: Train-the-Trainer-Programme und Kooperationsangebote für Organisationen, Schulen und soziale Einrichtungen.</p>
@@ -628,27 +630,27 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
       </ul>
     </div>
     <div class="bewusstsein-imgs">
-      <img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
+      <div class="bewusstsein-img-main-wrap"><img src="https://www.i-pro-p.de/images/bewusstseinstraining.jpg"
            alt="Bewusstseinstraining"
            loading="lazy" width="460" height="345"
-           class="bewusstsein-img-main">
+           class="bewusstsein-img-main" onerror="this.style.opacity='0'"></div>
       <div class="bewusstsein-img-row">
-        <img src="https://www.i-pro-p.de/runde-links-brehm-garten.jpg"
+        <div class="bewusstsein-img-wrap"><img src="https://www.i-pro-p.de/runde-links-brehm-garten.jpg"
              alt="Franziska Brehm im Garten"
              loading="lazy" width="200" height="200"
-             class="bewusstsein-img">
-        <img src="https://www.i-pro-p.de/rund-lila-blume.jpg"
+             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
+        <div class="bewusstsein-img-wrap"><img src="https://www.i-pro-p.de/rund-lila-blume.jpg"
              alt="Naturmotiv"
              loading="lazy" width="200" height="200"
-             class="bewusstsein-img">
-        <img src="https://www.i-pro-p.de/schale-rund.jpg"
+             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
+        <div class="bewusstsein-img-wrap"><img src="https://www.i-pro-p.de/schale-rund.jpg"
              alt="Klangschale"
              loading="lazy" width="200" height="200"
-             class="bewusstsein-img">
-        <img src="https://www.i-pro-p.de/kontakt.jpg"
+             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
+        <div class="bewusstsein-img-wrap"><img src="https://www.i-pro-p.de/kontakt.jpg"
              alt="Atmosphäre"
              loading="lazy" width="200" height="200"
-             class="bewusstsein-img">
+             class="bewusstsein-img" onerror="this.style.opacity='0'"></div>
       </div>
     </div>
   </div>
@@ -674,7 +676,7 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
       <img src="https://www.i-pro-p.de/upload/bilder/kaertchen.jpg"
            alt="Affirmationskärtchen von I-pro-P"
            loading="lazy" width="380" height="285"
-           class="inspiration-img">
+           class="inspiration-img" onerror="this.style.display='none'">
     </div>
   </div>
 </section>
@@ -699,7 +701,7 @@ footer { background: #0E0818; padding: 2.5rem clamp(1.5rem, 5vw, 5rem); display:
         <img src="https://www.i-pro-p.de/kontakt.jpg"
              alt="Kontakt I-pro-P"
              loading="lazy" width="400" height="300"
-             class="kontakt-img">
+             class="kontakt-img" onerror="this.style.display='none'">
       </div>
     </div>
     <form class="kontakt-form" onsubmit="return false;" aria-label="Kontaktformular">
